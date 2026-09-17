@@ -161,10 +161,12 @@ with tab2:
     st.subheader("Approval Duration Distribution (Breaks <= 10 minutes)")
     fig, ax = plt.subplots(figsize=(10, 4))
     FilteredFile[FilteredFile["ApprovalDuration"] <= 600]["ApprovalDuration"].plot(
-        kind="hist", bins=75, edgecolor="black", color="#FF1493", ax=ax
+        kind="hist", bins = 60, edgecolor = "black", color="#FF1493", ax = ax
     )
-    ax.set_xlabel("Duration (seconds)")
-    ax.set_ylabel("Frequency")
+
+    ax.set_yscale("log")
+    ax.set_xlabel("Duration (seconds)", weight = "bold")
+    ax.set_ylabel("Frequency (log scale)", weight = "bold")
     st.pyplot(fig)
 
     st.subheader("Distribution of Average Duration (Block Level)")
