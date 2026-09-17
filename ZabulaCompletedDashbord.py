@@ -59,22 +59,32 @@ selected_techs = st.sidebar.multiselect("Select Technician(s)", technicians, def
 st.sidebar.markdown("---")
 st.sidebar.subheader("💰 Pay Rate Simulator")
 
+# Changed from slider to number_input
+custom_pre_rate = st.sidebar.number_input("Pre-Cut Pay Rate ($)", min_value=10, max_value=400, value=50, step=1)
+custom_post_rate = st.sidebar.number_input("Post-Cut Pay Rate ($)", min_value=5, max_value=300, value=17, step=1)
+
 st.sidebar.markdown("---")
 st.sidebar.caption("📊 **Project Developer**")
 st.sidebar.caption("Jeanelle Mayamiko Zabula")
 st.sidebar.caption("M.S. Business Analytics | Mercer University")
 
-# Changed from slider to number_input
-custom_pre_rate = st.sidebar.number_input("Pre-Cut Pay Rate ($)", min_value=10, max_value=400, value=50, step=1)
-custom_post_rate = st.sidebar.number_input("Post-Cut Pay Rate ($)", min_value=5, max_value=300, value=17, step=1)
+st.sidebar.markdown("---")
+st.sidebar.subheader("⏱️ Anomaly Threshold")
+MaxDuration = st.sidebar.slider(
+    "Max Duration to Analyze (seconds)", 
+    min_value=60, 
+    max_value=1200, 
+    value=600, 
+    step=60
+)
 
 FilteredFile = CompleteFile[CompleteFile["PROVIDER_APPROVING_NAME"].isin(selected_techs)]
 
 # --- 4. DATA TRANSFORMATIONS ---
-DurationBlocks = (FilteredFile["ApprovalDuration"] > 600) | (FilteredFile["ApprovalDuration"].isna())
+DurationBlocks = (FilteredFile["ApprovalDuration"] > MaxDuration) | (FilteredFile["ApprovalDuration"].isna())
 FilteredFile["BlockID"] = DurationBlocks.cumsum()
 
-WorkingBlocksData = FilteredFile[FilteredFile["ApprovalDuration"] <= 600].copy()
+WorkingBlocksData = FilteredFile[FilteredFile["ApprovalDuration"] <= MaxDuration].copy()
 WorkingBlocksData["IsZeroSec"] = (WorkingBlocksData["ApprovalDuration"] == 0).astype(int)
 WorkingBlocksData["IsUnder2"] = (WorkingBlocksData["ApprovalDuration"] <= 2).astype(int)
 WorkingBlocksData["IsUnder5"] = (WorkingBlocksData["ApprovalDuration"] <= 5).astype(int)
@@ -164,9 +174,9 @@ with tab1:
         m_col3.metric("Speed Difference", f"{abs(t1_data['AverageDuration'].mean() - t2_data['AverageDuration'].mean()):.2f} sec")
 
 with tab2:
-    st.subheader("Approval Duration Distribution (Breaks <= 10 minutes)")
+    st.subheader(f"Approval Duration Distribution (Breaks <= {int(MaxDuration/60)} minutes)")
     fig, ax = plt.subplots(figsize=(10, 4))
-    FilteredFile[FilteredFile["ApprovalDuration"] <= 600]["ApprovalDuration"].plot(
+    FilteredFile[FilteredFile["ApprovalDuration"] <= MaxDuration]["ApprovalDuration"].plot(
         kind="hist", bins = 60, edgecolor = "black", color="#FF1493", ax = ax
     )
 
@@ -182,7 +192,7 @@ with tab2:
     st.pyplot(fig, use_container_width=False)
 
 with tab3:
-    st.subheader("Technician Boxplots (Durations <= 600s)")
+    st.subheader(f"Technician Boxplots (Durations <= {MaxDuration} seconds)")
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     Matt["ApprovalDuration"].plot(kind="box", ax=axes[0], patch_artist=True, boxprops=dict(facecolor="blue", color="black"), showfliers=False)
     axes[0].set_title("Matt Shawn")
