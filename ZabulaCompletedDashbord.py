@@ -79,7 +79,7 @@ st.sidebar.caption("Jeanelle Mayamiko Zabula")
 st.sidebar.caption("M.S. Business Analytics | Mercer University")
 
 
-FilteredFile = CompleteFile[CompleteFile["PROVIDER_APPROVING_NAME"].isin(selected_techs)]
+FilteredFile = CompleteFile[CompleteFile["PROVIDER_APPROVING_NAME"].isin(selected_techs)].copy()
 
 # --- 4. DATA TRANSFORMATIONS ---
 DurationBlocks = (FilteredFile["ApprovalDuration"] > MaxDuration) | (FilteredFile["ApprovalDuration"].isna())
@@ -195,44 +195,61 @@ with tab2:
 with tab3:
     st.subheader(f"Technician Boxplots (Durations <= {MaxDuration} seconds)")
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-    Matt["ApprovalDuration"].plot(kind="box", ax=axes[0], patch_artist=True, boxprops=dict(facecolor="blue", color="black"), showfliers=False)
+
+    if not Matt.empty:
+        Matt["ApprovalDuration"].plot(kind="box", ax=axes[0], patch_artist=True, boxprops=dict(facecolor="blue", color="black"), showfliers=False)
     axes[0].set_title("Matt Shawn")
     axes[0].set_ylabel("Duration (seconds)")
-    
-    Juan["ApprovalDuration"].plot(kind="box", ax=axes[1], patch_artist=True, boxprops=dict(facecolor="green", color="black"), showfliers=False)
+
+    if not Juan.empty:
+        Juan["ApprovalDuration"].plot(kind="box", ax=axes[1], patch_artist=True, boxprops=dict(facecolor="green", color="black"), showfliers=False)
     axes[1].set_title("Juan Mendez")
-    
-    Gary["ApprovalDuration"].plot(kind="box", ax=axes[2], patch_artist=True, boxprops=dict(facecolor="hotpink", color="black"), showfliers=False)
+
+    if not Gary.empty:
+        Gary["ApprovalDuration"].plot(kind="box", ax=axes[2], patch_artist=True, boxprops=dict(facecolor="hotpink", color="black"), showfliers=False)
     axes[2].set_title("Gary Arnold")
+
     st.pyplot(fig, use_container_width=False)
 
 with tab4:
     st.subheader("Technician Histograms (Durations <= 100s)")
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-    Matt["ApprovalDuration"].plot(kind="hist", bins=50, range=(0, 100), edgecolor="black", color="blue", ax=axes[0])
+
+    if not Matt.empty:
+        Matt["ApprovalDuration"].plot(kind="hist", bins=50, range=(0, 100), edgecolor="black", color="blue", ax=axes[0])
     axes[0].set_title("Matt Shawn")
-    
-    Juan["ApprovalDuration"].plot(kind="hist", bins=50, range=(0, 100), edgecolor="black", color="green", ax=axes[1])
+
+    if not Juan.empty:
+        Juan["ApprovalDuration"].plot(kind="hist", bins=50, range=(0, 100), edgecolor="black", color="green", ax=axes[1])
     axes[1].set_title("Juan Mendez")
-    
-    Gary["ApprovalDuration"].plot(kind="hist", bins=50, range=(0, 100), edgecolor="black", color="hotpink", ax=axes[2])
+
+    if not Gary.empty:
+        Gary["ApprovalDuration"].plot(kind="hist", bins=50, range=(0, 100), edgecolor="black", color="hotpink", ax=axes[2])
     axes[2].set_title("Gary Arnold")
+
     st.pyplot(fig, use_container_width=False)
 
 with tab5:
     st.subheader("Chronological Timelines & Pay Cuts")
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5), sharex=True)
-    Matt.plot.scatter(x="APPROVAL_DATE", y="ApprovalDuration", color="blue", alpha=0.3, s=10, ax=ax1)
+
+    if not Matt.empty:
+        Matt.plot.scatter(x="APPROVAL_DATE", y="ApprovalDuration", color="blue", alpha=0.3, s=10, ax=ax1)
     ax1.axvline(pd.to_datetime("2020-06-01"), color="black", linestyle="--", linewidth=2)
     ax1.set_title("Matt Shawn")
-    
-    Juan.plot.scatter(x="APPROVAL_DATE", y="ApprovalDuration", color="green", alpha=0.3, s=10, ax=ax2)
+
+    if not Juan.empty:
+        Juan.plot.scatter(x="APPROVAL_DATE", y="ApprovalDuration", color="green", alpha=0.3, s=10, ax=ax2)
     ax2.axvline(pd.to_datetime("2020-06-01"), color="black", linestyle="--", linewidth=2)
     ax2.set_title("Juan Mendez")
-    
-    Gary.plot.scatter(x="APPROVAL_DATE", y="ApprovalDuration", color="hotpink", alpha=0.3, s=10, ax=ax3)
+
+    if not Gary.empty:
+        Gary.plot.scatter(x="APPROVAL_DATE", y="ApprovalDuration", color="hotpink", alpha=0.3, s=10, ax=ax3)
     ax3.axvline(pd.to_datetime("2020-06-01"), color="black", linestyle="--", linewidth=2)
     ax3.set_title("Gary Arnold")
+
+    locator = mdates.AutoDateLocator(maxticks=8)
+    ax1.xaxis.set_major_locator(locator)
 
     formatter = mdates.DateFormatter('%y-%m') 
     ax1.xaxis.set_major_formatter(formatter)
