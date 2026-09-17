@@ -167,13 +167,13 @@ with tab2:
     ax.set_yscale("log")
     ax.set_xlabel("Duration (seconds)", weight = "bold")
     ax.set_ylabel("Frequency (log scale)", weight = "bold")
-    st.pyplot(fig)
+    st.pyplot(fig, use_container_width=False)
 
     st.subheader("Distribution of Average Duration (Block Level)")
     fig, ax = plt.subplots(figsize=(10, 4))
     sns.histplot(BlockAnalysis["AverageDuration"], bins=100, color="#980EDD", kde=True, ax=ax)
     ax.set_xlim(0, 100)
-    st.pyplot(fig)
+    st.pyplot(fig, use_container_width=False)
 
 with tab3:
     st.subheader("Technician Boxplots (Durations <= 600s)")
@@ -187,7 +187,7 @@ with tab3:
     
     Gary["ApprovalDuration"].plot(kind="box", ax=axes[2], patch_artist=True, boxprops=dict(facecolor="hotpink", color="black"), showfliers=False)
     axes[2].set_title("Gary Arnold")
-    st.pyplot(fig)
+    st.pyplot(fig, use_container_width=False)
 
 with tab4:
     st.subheader("Technician Histograms (Durations <= 100s)")
@@ -200,7 +200,7 @@ with tab4:
     
     Gary["ApprovalDuration"].plot(kind="hist", bins=50, range=(0, 100), edgecolor="black", color="hotpink", ax=axes[2])
     axes[2].set_title("Gary Arnold")
-    st.pyplot(fig)
+    st.pyplot(fig, use_container_width=False)
 
 with tab5:
     st.subheader("Chronological Timelines & Pay Cuts")
@@ -216,7 +216,7 @@ with tab5:
     Gary.plot.scatter(x="APPROVAL_DATE", y="ApprovalDuration", color="hotpink", alpha=0.3, s=10, ax=ax3)
     ax3.axvline(pd.to_datetime("2020-06-01"), color="black", linestyle="--", linewidth=2)
     ax3.set_title("Gary Arnold")
-    st.pyplot(fig)
+    st.pyplot(fig, use_container_width=False)
 
     st.markdown("---")
     st.subheader("Gary Arnold Simulated Daily Earnings")
@@ -231,7 +231,7 @@ with tab5:
         ax_earn.axvline(pd.to_datetime("2020-06-01"), color="black", linestyle="--", linewidth=2, label="June 2020 Pay Cut")
         ax_earn.set_title("Daily Earnings Under Simulated Pay Rates")
         ax_earn.legend()
-        st.pyplot(fig_earn)
+        st.pyplot(fig_earn, use_container_width=False)
 
 with tab6:
     col_l, col_r = st.columns(2)
@@ -240,12 +240,12 @@ with tab6:
         fig, ax = plt.subplots(figsize=(8, 5))
         sns.scatterplot(data=BlockAnalysis, x="FatigueIndex", y="HighRiskRatio", color="#980EDD", alpha=0.6, ax=ax)
         ax.set_xlim(0, 10)
-        st.pyplot(fig)
+        st.pyplot(fig, use_container_width=False)
     with col_r:
         st.subheader("Density Heatmap")
         fig, ax = plt.subplots(figsize=(8, 5))
         sns.histplot(data=BlockAnalysis, x="FatigueIndex", y="HighRiskRatio", bins=30, cbar=True, cmap="viridis", ax=ax)
-        st.pyplot(fig)
+        st.pyplot(fig, use_container_width=False)
 
     st.subheader("Correlation Matrix")
     CaseCorr = BlockAnalysis[["FatigueIndex", "HighRiskRatio", "AverageDuration"]].dropna()
