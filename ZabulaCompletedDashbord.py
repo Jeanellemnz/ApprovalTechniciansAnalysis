@@ -57,8 +57,10 @@ selected_techs = st.sidebar.multiselect("Select Technician(s)", technicians, def
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("💰 Pay Rate Simulator")
-custom_pre_rate = st.sidebar.slider("Pre-Cut Pay Rate ($)", 15, 150, 50)
-custom_post_rate = st.sidebar.slider("Post-Cut Pay Rate ($)", 10, 100, 17)
+
+# Changed from slider to number_input
+custom_pre_rate = st.sidebar.number_input("Pre-Cut Pay Rate ($)", min_value=10, max_value=400, value=50, step=1)
+custom_post_rate = st.sidebar.number_input("Post-Cut Pay Rate ($)", min_value=5, max_value=300, value=17, step=1)
 
 FilteredFile = CompleteFile[CompleteFile["PROVIDER_APPROVING_NAME"].isin(selected_techs)]
 
