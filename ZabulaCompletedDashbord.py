@@ -151,13 +151,13 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
 ])
 
 with tab1:
-    st.subheader("⚡ Dynamic Risk & Threshold Explorer")
+    st.subheader("Dynamic Risk & Threshold Explorer")
     risk_threshold = st.slider("Define Custom 'High-Risk' Approval Threshold (Seconds)", 1, 30, 5)
     dynamic_high_risk = WorkingBlocksData[WorkingBlocksData["ApprovalDuration"] <= risk_threshold]
     st.info(f"Out of the dataset, **{len(dynamic_high_risk):,}** total approvals happened in under **{risk_threshold} seconds**.")
 
     st.markdown("---")
-    st.subheader("🥊 Technician Head-to-Head Face-Off")
+    st.subheader("Technician Head-to-Head Face-Off")
     tech_list = FilteredFile["PROVIDER_APPROVING_NAME"].dropna().unique()
     if len(tech_list) >= 2:
         col_a, col_b = st.columns(2)
