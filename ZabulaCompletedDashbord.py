@@ -64,11 +64,6 @@ custom_pre_rate = st.sidebar.number_input("Pre-Cut Pay Rate ($)", min_value=10, 
 custom_post_rate = st.sidebar.number_input("Post-Cut Pay Rate ($)", min_value=5, max_value=300, value=17, step=1)
 
 st.sidebar.markdown("---")
-st.sidebar.caption("📊 **Project Developer**")
-st.sidebar.caption("Jeanelle Mayamiko Zabula")
-st.sidebar.caption("M.S. Business Analytics | Mercer University")
-
-st.sidebar.markdown("---")
 st.sidebar.subheader("⏱️ Anomaly Threshold")
 MaxDuration = st.sidebar.slider(
     "Max Duration to Analyze (seconds)", 
@@ -77,6 +72,12 @@ MaxDuration = st.sidebar.slider(
     value=600, 
     step=60
 )
+
+st.sidebar.markdown("---")
+st.sidebar.caption("📊 **Project Developer**")
+st.sidebar.caption("Jeanelle Mayamiko Zabula")
+st.sidebar.caption("M.S. Business Analytics | Mercer University")
+
 
 FilteredFile = CompleteFile[CompleteFile["PROVIDER_APPROVING_NAME"].isin(selected_techs)]
 
