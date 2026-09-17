@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from scipy import stats
 import glob
 import os
@@ -216,6 +217,12 @@ with tab5:
     Gary.plot.scatter(x="APPROVAL_DATE", y="ApprovalDuration", color="hotpink", alpha=0.3, s=10, ax=ax3)
     ax3.axvline(pd.to_datetime("2020-06-01"), color="black", linestyle="--", linewidth=2)
     ax3.set_title("Gary Arnold")
+
+    formatter = mdates.DateFormatter('%y-%m') 
+    ax1.xaxis.set_major_formatter(formatter)
+    
+    fig.tight_layout()
+    
     st.pyplot(fig, use_container_width=False)
 
     st.markdown("---")
